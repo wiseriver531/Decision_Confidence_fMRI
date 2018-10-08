@@ -1,11 +1,10 @@
 % ------------------------------------------------------------------------
-% Behaviral data analysis for the manuscript "Overlapping and unique
+% Behavioral data analysis for the manuscript "Overlapping and unique
 % neural circuits supports perceptual decision making and confidence".
 %
-% Locate your current directory to where the code is saved
-%
-% Written by Jiwon Yeon, last edited Oct.04.18
+% Written by Jiwon Yeon, last edited Oct.08.18
 % ------------------------------------------------------------------------
+
 clear all
 
 motherPath = pwd;
@@ -38,19 +37,14 @@ for sub = Subjects;
         end
         resp = [resp; [dec_rt, conf_rt, dec_cr, conf_resp]];    % save block data
         nTrials = length(dec_rt);   % number of completed trials 
-                
-        trial_type = p.trial_type(1:nTrials)';     
-        % trial_type: 1-decision+confidence; 2-decision; 3-catch (invalid
-        % cue)
         
-        coherence = p.percentCoherentMovement(1:nTrials)';
-        % coherence: low-.04; high-.08;
+        trial_type = p.trial_type(1:nTrials)'; %1-decision+confidence; 2-decision; 3-catch (invalid cue)
+        
+        coherence = p.percentCoherentMovement(1:nTrials)'; %1: low, 2: high
         
         idx = (trial_type == 1);    % find trials have confidence response
         conf_cue = zeros(nTrials,1);
-        conf_cue(idx,1) = p.conf_type(1:sum(idx))'+1; 
-        % conf_cue: confidence cue; 0-no confidence response; 2-2scales;
-        % 3-3scales; 4-4scales;
+        conf_cue(idx,1) = p.conf_type(1:sum(idx))'+1; %0: no confidence response; 2-4: 2-4-point scale
                 
         info = [info; [trial_type, coherence, conf_cue]];   % save trial information
     end
